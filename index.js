@@ -88,7 +88,7 @@ const iosSortedData = (data) => {
                     fileName: getFileName(path),
                     extension: getExtension(path),
                     mimeType: getMimeType(path),
-                    filePath: path
+                    filePath: decodeURIComponent(path),
                 }
                 object.push(obj);
             }
