@@ -14,20 +14,28 @@ export default class ReceiveSharingIntentModule {
                     this.getFileNames(handler, errorHandler, res);
                 }
             }).catch(e => { });
-            Linking.addEventListener("url", (res) => {
+            const listener = (res) => {
                 console.log(res);
                 let url = res ? res.url : "";
                 if (url.startsWith("ShareMedia://dataUrl")) {
                     this.getFileNames(handler,errorHandler, res.url);
                 }
-            });
+            }
+            Linking.addEventListener("url", listener);
+            return function removeListener() {
+                Linking.removeEventListener("url", listener);
+            };
         }else{
-            AppState.addEventListener('change', (status) => {
+            const listener = (status) => {
                 if (status === 'active') {
                     this.getFileNames(handler,errorHandler, null);
                 }
-              });
+              }
+            AppState.addEventListener('change', listener);
             this.getFileNames(handler,errorHandler, null);
+            return function removeListener() {
+                AppState.removeEventListener("change", listener);
+            };
         }
     }
 
