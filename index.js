@@ -31,10 +31,10 @@ export default class ReceiveSharingIntentModule {
                     this.getFileNames(handler,errorHandler, null);
                 }
               }
-            AppState.addEventListener('change', listener);
+            const evtSub = AppState.addEventListener('change', listener);
             this.getFileNames(handler,errorHandler, null);
             return function removeListener() {
-                AppState.removeEventListener("change", listener);
+                evtSub.remove();
             };
         }
     }
